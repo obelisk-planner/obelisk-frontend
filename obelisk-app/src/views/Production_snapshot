@@ -1,0 +1,65 @@
+<template>
+ <div class="mw6 center pa3 sans-serif">
+  <h1 class="mb4">Recipe</h1>
+    <p v-if="state == 'error'" class="orange">{{ error }}</p>
+    <div v-else-if="state == 'ready'">
+
+      <table>
+        <tr>
+           <th v-if="this.steady">{{ recipe.recipe_name }} Starting Production</th>
+           <th v-else>{{ recipe.recipe_name }} Starting Production</th>
+        </tr>
+
+        <tr>
+          <td>Current consumer price:</td>
+          <td>${{ recipe.consumer_price }}/unit activity</td>
+        </tr>
+
+        <tr>
+          <td>Produces:</td>
+          <td>{{ production.production }} {{ resource.measurement_unit }</td>
+        </tr>
+
+      </table>
+    </div>
+    <p v-else-if="state == 'loading'">Loading recipe...</p>
+  
+ </div>
+</template>
+
+<script>
+import Production_res from "@/components/Production_res.vue";
+import Production_start_res from "@/components/Production_start_res.vue";
+
+export default {
+  components: {
+    'production': Production_res,
+    'start-production': Production_start_res
+  },
+  created() {
+    this.loadRecipe();
+  },
+  data() {
+    return {
+      recipe: {},
+      error: "",
+      state: "loading"
+    };
+  },
+  methods: {
+    async loadRecipe() {
+      try {
+        const recipes = await fetch(
+          `http://10.152.152.11:3000/recipes_history?id=eq.`+ this.$route.path.split("/")[3],
+          {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
+        ).then(response => response.json());
+        this.recipe = recipes[0];
+        this.state = "ready";
+      } catch (err) {
+        this.error = err;
+        this.state = "error";
+      }
+    }
+  }
+};
+</script>

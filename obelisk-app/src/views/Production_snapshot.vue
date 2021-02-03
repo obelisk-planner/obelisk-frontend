@@ -1,0 +1,77 @@
+<template>
+ <div class="mw6 center pa3 sans-serif">
+    <p v-if="state == 'error'" class="orange">{{ error }}</p>
+    <div v-else-if="state == 'ready'">
+
+      <table>
+        <tr>
+           <th v-if="this.steady">Recipe "{{ production.recipe_id.recipe_name }}" Production</th>
+           <th v-else>Recipe "{{ production.recipe_id.recipe_name }}" Starting Production</th>
+        </tr>
+
+        <tr>
+          <td>Resource:</td>
+          <td>
+            <router-link v-bind:to="'/resource/' + this.production.resource_id.id">
+              {{ production.resource_id.resource_name }}
+            </router-link>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Produces:</td>
+          <td>{{ production.production }} {{ production.resource_id.measurement_unit }}/week</td>
+        </tr>
+
+      </table>
+    </div>
+    <p v-else-if="state == 'loading'">Loading production snapshot...</p>
+  
+ </div>
+</template>
+
+<script>
+
+export default {
+  props: ['user_jwt'],
+  created() {
+    this.loadProduction();
+  },
+  data() {
+    return {
+      production: {},
+      steady: false,
+      error: "",
+      state: "loading"
+    };
+  },
+  methods: {
+    async loadProduction() {
+      try {
+        const starting = await fetch(
+          `http://10.152.152.11:3000/starting_production_history?change_id=eq.`
+            + this.$route.path.split("/")[4]
+            + '&select=production,recipe_id(recipe_name,id),'
+            + 'resource_id(resource_name,id,measurement_unit)',
+          {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
+        ).then(response => response.json());
+        const steady = await fetch(
+          `http://10.152.152.11:3000/production_history?change_id=eq.`
+            + this.$route.path.split("/")[4]
+            + '&select=production,recipe_id(recipe_name,id),'
+            + 'resource_id(resource_name,id,measurement_unit)',
+          {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
+        ).then(response => response.json());
+        console.log(starting.length);
+        console.log(steady.length);
+        if (starting.length == 1) {this.production = starting[0];}
+        if (steady.length == 1) {this.production = steady[0]; this.steady = true;}
+        this.state = "ready";
+      } catch (err) {
+        this.error = err;
+        this.state = "error";
+      }
+    }
+  }
+};
+</script>
