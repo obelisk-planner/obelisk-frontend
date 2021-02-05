@@ -11,6 +11,10 @@ else
 echo "Skipping."
 fi
 
+cd pgjwt
+make install
+cd ..
+
 psql -f sql/auth.sql $dbname
 
 randompass=$(cat /dev/urandom | tr -dc A-Za-z0-9 | head -c32)
@@ -102,3 +106,6 @@ END;
 
 GRANT EXECUTE ON FUNCTION obelisk.login TO anon;
 " | psql $dbname
+
+npm install @vue/cli
+npm install vue-router
