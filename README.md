@@ -3,6 +3,7 @@ back into the database is written but doesn't work yet. I plan to explain more f
 
 You'll need a Linux machine, NPM and PostgreSQL with an empty database set up, and the appropriate postgresql-server-dev installed.
 Once that's done, run su install-depend.sh and (not su) setup.sh from a PostgreSQL superuser. Finally, to start serving, run obelisk.sh.
+If it doesn't work, make sure PostgreSQL is accepting local IPv6 connections.
 
 Thanks to the creators of PostgREST (https://github.com/PostgREST/postgrest/) and it's pgjwt extension, as well as
 Vue.js and Vue Router (https://github.com/vuejs), which I've taken full advantage of.
