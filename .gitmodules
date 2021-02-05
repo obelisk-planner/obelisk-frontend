@@ -1,0 +1,3 @@
+[submodule "pgjwt"]
+	path = pgjwt
+	url = https://github.com/michelp/pgjwt
