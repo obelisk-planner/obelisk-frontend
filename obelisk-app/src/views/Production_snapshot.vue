@@ -5,22 +5,28 @@
 
       <table>
         <tr>
-           <th v-if="this.steady">Recipe "{{ production.recipe_id.recipe_name }}" Production</th>
-           <th v-else>Recipe "{{ production.recipe_id.recipe_name }}" Starting Production</th>
+           <th v-if="this.steady">Recipe 
+              <router-link v-bind:to="'/history/display/recipe/' + this.production.change_id">
+                "{{ production.recipe_name }}"
+              </router-link> Production</th>
+           <th v-else>Recipe 
+              <router-link v-bind:to="'/history/display/recipe/' + this.production.change_id">
+                "{{ production.recipe_name }}"
+              </router-link> Starting Production</th>
         </tr>
 
         <tr>
           <td>Resource:</td>
           <td>
-            <router-link v-bind:to="'/resource/' + this.production.resource_id.id">
-              {{ production.resource_id.resource_name }}
+            <router-link v-bind:to="'/resource/' + this.production.resource_id">
+              {{ production.resource_name }}
             </router-link>
           </td>
         </tr>
 
         <tr>
           <td>Produces:</td>
-          <td>{{ production.production }} {{ production.resource_id.measurement_unit }}/week</td>
+          <td>{{ production.production }} {{ production.measurement_unit }}/week</td>
         </tr>
 
       </table>
@@ -50,22 +56,34 @@ export default {
       try {
         const starting = await fetch(
           `http://10.152.152.11:3000/starting_production_history?change_id=eq.`
-            + this.$route.path.split("/")[4]
-            + '&select=production,recipe_id(recipe_name,id),'
-            + 'resource_id(resource_name,id,measurement_unit)',
+            + this.$route.path.split("/")[4],
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         ).then(response => response.json());
         const steady = await fetch(
           `http://10.152.152.11:3000/production_history?change_id=eq.`
-            + this.$route.path.split("/")[4]
-            + '&select=production,recipe_id(recipe_name,id),'
-            + 'resource_id(resource_name,id,measurement_unit)',
+            + this.$route.path.split("/")[4],
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         ).then(response => response.json());
-        console.log(starting.length);
-        console.log(steady.length);
-        if (starting.length == 1) {this.production = starting[0];}
-        if (steady.length == 1) {this.production = steady[0]; this.steady = true;}
+        if (starting.length == 1) {
+          this.production = starting[0];
+        }
+        if (steady.length == 1) {
+          this.production = steady[0];
+          this.steady = true;
+        }
+        var new_prop = {};
+        new_prop = await fetch('http://10.152.152.11:3000/recipes_history?changed_time=lte.' 
+          + encodeURIComponent(this.production.changed_time) + '&limit=1&select=recipe_name,change_id')
+            .then(response => response.json());
+        this.production = Object.assign(this.production,new_prop[0]);
+        new_prop = await fetch('http://10.152.152.11:3000/resources_history?changed_time=lte.' 
+          + encodeURIComponent(this.production.changed_time) + '&limit=1&select=resource_name')
+            .then(response => response.json());
+        this.production = Object.assign(this.production,new_prop[0]);
+        new_prop = await fetch('http://10.152.152.11:3000/resources_history?changed_time=lte.' 
+          + encodeURIComponent(this.production.changed_time) + '&limit=1&select=measurement_unit')
+            .then(response => response.json());
+        this.production = Object.assign(this.production,new_prop[0]);
         this.state = "ready";
       } catch (err) {
         this.error = err;

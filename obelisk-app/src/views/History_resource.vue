@@ -6,7 +6,7 @@
         <thead>
           <tr>
               <th colspan="2">
-                <router-link v-bind:to="'/resource' + this.$route.path.split('/')[3]">
+                <router-link v-bind:to="'/resource/' + this.$route.path.split('/')[3]">
                   {{ resourcename }}
                 </router-link>
               past actions:</th>

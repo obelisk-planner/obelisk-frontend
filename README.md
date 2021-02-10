@@ -8,5 +8,4 @@ If it doesn't work, make sure PostgreSQL is accepting local IPv6 connections.
 Thanks to the creators of PostgREST (https://github.com/PostgREST/postgrest/) and it's pgjwt extension, as well as
 Vue.js and Vue Router (https://github.com/vuejs), which I've taken full advantage of.
 
-This is my first project using these tools and I expect it will be janky. I'm currently aware of the
-edit history system being broken.
+This is my first project using these tools and I expect it will be janky.

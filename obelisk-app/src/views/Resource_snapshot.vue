@@ -7,6 +7,12 @@
       <table>
         <tr>
           <th>{{ resource.resource_name }}</th>
+           <td>
+              <router-link  v-if="this.still_there" v-bind:to="'/resource/' + this.resource.id">
+                Current Page
+              </router-link>
+              <div v-else>Deleted</div>
+           </td>
         </tr>
 
         <tr>
@@ -145,6 +151,7 @@ export default {
         { text: 'U', value: 82 }
 
       ],
+      still_there: false,
       selected: 0,
       error: "",
       state: "loading"
@@ -158,6 +165,11 @@ export default {
           `http://10.152.152.11:3000/resources_history?change_id=eq.`+ this.$route.path.split("/")[4],
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         ).then(response => response.json());
+        const current = await fetch(
+          `http://10.152.152.11:3000/resources?id=eq.`+ resources[0].id + '&select=id&limit=1',
+          {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
+        ).then(response => response.json());
+        if (current) {this.still_there=true;}
         this.resource = resources[0];
         if (this.resource.transport_token_id != null) {
           const tokens = await fetch(

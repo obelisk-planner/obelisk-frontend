@@ -7,6 +7,12 @@
       <table>
         <tr>
            <th>{{ recipe.recipe_name }}</th>
+           <td>
+              <router-link v-if="this.still_there" v-bind:to="'/recipe/' + this.recipe.id">
+                Current Page
+              </router-link>
+              <div v-else>Deleted</div>
+           </td>
         </tr>
 
         <tr>
@@ -42,6 +48,7 @@ export default {
   data() {
     return {
       recipe: {},
+      still_there: false,
       error: "",
       state: "loading"
     };
@@ -53,6 +60,11 @@ export default {
           `http://10.152.152.11:3000/recipes_history?change_id=eq.`+ this.$route.path.split("/")[4],
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         ).then(response => response.json());
+        const current = await fetch(
+          `http://10.152.152.11:3000/recipes?id=eq.`+ recipes[0].id + '&select=id&limit=1',
+          {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
+        ).then(response => response.json());
+        if (current) {this.still_there=true;}
         this.recipe = recipes[0];
         this.state = "ready";
       } catch (err) {
