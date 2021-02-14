@@ -201,14 +201,14 @@ export default {
     async loadResource() {
       try {
         const resources = await fetch(
-          `http://10.152.152.11:3000/resources?id=eq.`+ this.$route.path.split("/")[3],
+          'http://' + process.env.VUE_APP_API_URL + '/resources?id=eq.'+ this.$route.path.split("/")[3],
             {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
           ).then(response => response.json());
         this.resource = resources[0];
         if (this.resource.transport_token_id) {
           this.has_token = true;
           const tokens = await fetch(
-            'http://10.152.152.11:3000/resources?id=eq.'+this.resource.transport_token_id,
+            'http://' + process.env.VUE_APP_API_URL + '/resources?id=eq.'+this.resource.transport_token_id,
             {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
           ).then(response => response.json());
           this.resource.token = tokens[0];
@@ -239,7 +239,7 @@ export default {
       if ('id' in this.resource) {
         new_resource.selected_id = this.$route.path.split("/")[3];
         uuid = this.$route.path.split("/")[3];
-        fetch(`http://10.152.152.11:3000/rpc/update_resource`, {
+        fetch('http://' + process.env.VUE_APP_API_URL + '/rpc/update_resource', {
           method: "POST",
           body: JSON.stringify(new_resource),
           headers: {
@@ -249,7 +249,7 @@ export default {
         });
       } else {
         try{
-          uuid = await fetch(`http://10.152.152.11:3000/rpc/create_resource`, {
+          uuid = await fetch('http://' + process.env.VUE_APP_API_URL + '/rpc/create_resource', {
             method: 'POST',
             body: JSON.stringify(new_resource),
             headers: {

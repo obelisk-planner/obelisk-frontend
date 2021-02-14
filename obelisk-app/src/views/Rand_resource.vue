@@ -22,7 +22,7 @@ export default {
    async loadResource() {
     try{
       const resource = await fetch(
-        `http://10.152.152.11:3000/rpc/random_resource`,
+        'http://' + process.env.VUE_APP_API_URL + '/rpc/random_resource',
         {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
       ).then(response => response.json());
       this.$router.replace({ path: '/resource/'+resource });

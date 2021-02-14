@@ -66,7 +66,7 @@ export default {
     async loadResults() {
       try {
         this.state = "ready";
-        this.results = await fetch('http://10.152.152.11:3000/resources?resource_name=like.*' 
+        this.results = await fetch('http://' + process.env.VUE_APP_API_URL + '/resources?resource_name=like.*' 
           + this.current_query + '*' + '&limit=' + this.result_limit + '&offset=' 
           + this.result_limit*this.page)
           .then(response => response.json());

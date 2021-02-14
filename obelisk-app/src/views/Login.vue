@@ -22,12 +22,12 @@ export default {
   methods: {
     async login() {
       try {
-        const jwt = await fetch(`http://10.152.152.11:3000/rpc/login`, {
+        const jwt = await fetch('http://' + process.env.VUE_APP_API_URL + '/rpc/login', {
             method: 'POST',
             body: '{"rol":"'+this.username+'", "pass":"'+this.password+'"}',
             headers: {'Content-Type': 'application/json;charset=utf-8'}
         }).then(response => response.json());
-        const editor = await fetch(`http://10.152.152.11:3000/rpc/are_they_editor`, {
+        const editor = await fetch('http://' + process.env.VUE_APP_API_URL + '/rpc/are_they_editor', {
             method: 'POST',
             body: '{"selected_user":"'+this.username+'"}',
             headers: {'Content-Type': 'application/json;charset=utf-8'}

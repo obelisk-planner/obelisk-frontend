@@ -86,7 +86,7 @@ export default {
     async loadRecipe() {
       try {
         const recipes = await fetch(
-          `http://10.152.152.11:3000/recipes?id=eq.`+ this.$route.path.split("/")[3],
+          'http://' + process.env.VUE_APP_API_URL + '/recipes?id=eq.'+ this.$route.path.split("/")[3],
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         ).then(response => response.json());
         this.recipe = recipes[0];
@@ -117,7 +117,7 @@ export default {
       if ('id' in this.recipe) {
         new_recipe.selected_id = this.$route.path.split("/")[3];
         try{
-          await fetch(`http://10.152.152.11:3000/rpc/update_recipe`, {
+          await fetch('http://' + process.env.VUE_APP_API_URL + '/rpc/update_recipe', {
             method: 'POST',
             body: JSON.stringify(new_recipe),
             headers: {
@@ -133,7 +133,7 @@ export default {
       } else {
         var uuid;
         try{
-          uuid = await fetch(`http://10.152.152.11:3000/rpc/create_recipe`, {
+          uuid = await fetch('http://' + process.env.VUE_APP_API_URL + '/rpc/create_recipe', {
             method: 'POST',
             body: JSON.stringify(new_recipe),
             headers: {

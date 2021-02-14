@@ -64,11 +64,11 @@ export default {
     async loadHistory() {
       var changes = [];
       try {
-        changes = await fetch('http://10.152.152.11:3000/recipes_history?id=eq.' 
+        changes = await fetch('http://' + process.env.VUE_APP_API_URL + '/recipes_history?id=eq.' 
           + this.$route.path.split("/")[3] + '&order=changed_time&limit=' 
           + this.result_limit + '&offset=' + this.result_limit*this.page)
             .then(response => response.json());
-        changes = changes + await fetch('http://10.152.152.11:3000production_history?recipe_id=eq.' 
+        changes = changes + await fetch('http://' + process.env.VUE_APP_API_URL + 'production_history?recipe_id=eq.' 
           + this.$route.path.split("/")[3] + '&order=changed_time&limit=' + this.result_limit
           + '&offset=' + this.result_limit*this.page)
             .then(response => response.json());

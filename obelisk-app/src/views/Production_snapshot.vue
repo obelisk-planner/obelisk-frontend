@@ -55,12 +55,12 @@ export default {
     async loadProduction() {
       try {
         const starting = await fetch(
-          `http://10.152.152.11:3000/starting_production_history?change_id=eq.`
+          'http://' + process.env.VUE_APP_API_URL + '/starting_production_history?change_id=eq.'
             + this.$route.path.split("/")[4],
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         ).then(response => response.json());
         const steady = await fetch(
-          `http://10.152.152.11:3000/production_history?change_id=eq.`
+          'http://' + process.env.VUE_APP_API_URL + '/production_history?change_id=eq.'
             + this.$route.path.split("/")[4],
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         ).then(response => response.json());
@@ -72,15 +72,15 @@ export default {
           this.steady = true;
         }
         var new_prop = {};
-        new_prop = await fetch('http://10.152.152.11:3000/recipes_history?changed_time=lte.' 
+        new_prop = await fetch('http://' + process.env.VUE_APP_API_URL + '/recipes_history?changed_time=lte.' 
           + encodeURIComponent(this.production.changed_time) + '&limit=1&select=recipe_name,change_id')
             .then(response => response.json());
         this.production = Object.assign(this.production,new_prop[0]);
-        new_prop = await fetch('http://10.152.152.11:3000/resources_history?changed_time=lte.' 
+        new_prop = await fetch('http://' + process.env.VUE_APP_API_URL + '/resources_history?changed_time=lte.' 
           + encodeURIComponent(this.production.changed_time) + '&limit=1&select=resource_name')
             .then(response => response.json());
         this.production = Object.assign(this.production,new_prop[0]);
-        new_prop = await fetch('http://10.152.152.11:3000/resources_history?changed_time=lte.' 
+        new_prop = await fetch('http://' + process.env.VUE_APP_API_URL + '/resources_history?changed_time=lte.' 
           + encodeURIComponent(this.production.changed_time) + '&limit=1&select=measurement_unit')
             .then(response => response.json());
         this.production = Object.assign(this.production,new_prop[0]);

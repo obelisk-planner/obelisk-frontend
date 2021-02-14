@@ -100,19 +100,19 @@ export default {
     async loadHistory() {
       var changes = [];
       try {
-        this.recipename = await fetch('http://10.152.152.11:3000/recipes?id=eq.' 
+        this.recipename = await fetch('http://' + process.env.VUE_APP_API_URL + '/recipes?id=eq.' 
           + this.$route.path.split("/")[3] + '&select=recipe_name') 
             .then(response => response.json());
         this.recipename = this.recipename[0].recipe_name;
-        changes = await fetch('http://10.152.152.11:3000/recipes_history?id=eq.' 
+        changes = await fetch('http://' + process.env.VUE_APP_API_URL + '/recipes_history?id=eq.' 
           + this.$route.path.split("/")[3] + '&order=changed_time&limit=' 
           + this.result_limit + '&offset=' + this.result_limit*this.page)
             .then(response => response.json());
-        changes = changes.concat(await fetch('http://10.152.152.11:3000/production_history?recipe_id=eq.' 
+        changes = changes.concat(await fetch('http://' + process.env.VUE_APP_API_URL + '/production_history?recipe_id=eq.' 
           + this.$route.path.split("/")[3] + '&order=changed_time&limit=' + this.result_limit
           + '&offset=' + this.result_limit*this.page)
             .then(response => response.json()));
-        changes = changes.concat(await fetch('http://10.152.152.11:3000/starting_production_history?recipe_id=eq.' 
+        changes = changes.concat(await fetch('http://' + process.env.VUE_APP_API_URL + '/starting_production_history?recipe_id=eq.' 
           + this.$route.path.split("/")[3] + '&order=changed_time&limit=' + this.result_limit
           + '&offset=' + this.result_limit*this.page)
             .then(response => response.json()));

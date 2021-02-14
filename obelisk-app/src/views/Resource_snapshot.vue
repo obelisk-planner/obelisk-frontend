@@ -162,18 +162,18 @@ export default {
     async loadResource() {
       try {
         const resources = await fetch(
-          `http://10.152.152.11:3000/resources_history?change_id=eq.`+ this.$route.path.split("/")[4],
+          'http://' + process.env.VUE_APP_API_URL + '/resources_history?change_id=eq.'+ this.$route.path.split("/")[4],
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         ).then(response => response.json());
         const current = await fetch(
-          `http://10.152.152.11:3000/resources?id=eq.`+ resources[0].id + '&select=id&limit=1',
+          'http://' + process.env.VUE_APP_API_URL + '/resources?id=eq.'+ resources[0].id + '&select=id&limit=1',
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         ).then(response => response.json());
         if (current) {this.still_there=true;}
         this.resource = resources[0];
         if (this.resource.transport_token_id != null) {
           const tokens = await fetch(
-            'http://10.152.152.11:3000/resources_history?change_id=eq.'+ this.resource.transport_token_id,
+            'http://' + process.env.VUE_APP_API_URL + '/resources_history?change_id=eq.'+ this.resource.transport_token_id,
             {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
           ).then(response => response.json());
           this.resource.token = tokens[0];

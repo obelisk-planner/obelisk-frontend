@@ -32,7 +32,7 @@ export default {
     async create_user() {
      if (this.matches) {
       try {
-        await fetch(`http://10.152.152.11:3000/rpc/add_user`, {
+        await fetch('http://' + process.env.VUE_APP_API_URL + '/rpc/add_user', {
             method: 'POST',
             body: '{"new_user":"'+this.username+'", "new_password":"'+this.fpassword+'"}',
             headers: {

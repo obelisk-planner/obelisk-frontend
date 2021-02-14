@@ -22,7 +22,7 @@ export default {
    async loadRecipe() {
     try{
       const recipe = await fetch(
-        `http://10.152.152.11:3000/rpc/random_recipe`,
+        'http://' + process.env.VUE_APP_API_URL + '/rpc/random_recipe',
         {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
       ).then(response => response.json());
       this.$router.replace({ path: '/recipe/'+recipe });

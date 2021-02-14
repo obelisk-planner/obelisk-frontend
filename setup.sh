@@ -2,6 +2,10 @@ read -p "Database to use:" dbname
 
 psql -f sql/obelisk.sql $dbname
 
+read -p "URL to access your API (pick localhost:3000 if unsure):" apiurl
+
+echo "VUE_APP_API_URL=$apiurl" > obelisk-app/.env
+
 read -p "Insert example data? y to do so:" dotestdata
 
 if [ "$dotestdata" == "y" ]

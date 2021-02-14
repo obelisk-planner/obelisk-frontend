@@ -90,11 +90,11 @@ export default {
     async loadHistory() {
       var changes = [];
       try {
-        this.resourcename = await fetch('http://10.152.152.11:3000/resources?id=eq.' 
+        this.resourcename = await fetch('http://' + process.env.VUE_APP_API_URL + '/resources?id=eq.' 
           + this.$route.path.split("/")[3] + '&select=resource_name') 
             .then(response => response.json());
         this.resourcename = this.resourcename[0].resource_name;
-        changes = await fetch('http://10.152.152.11:3000/resources_history?id=eq.' 
+        changes = await fetch('http://' + process.env.VUE_APP_API_URL + '/resources_history?id=eq.' 
           + this.$route.path.split("/")[3] + '&order=changed_time&limit=' 
           + this.result_limit + '&offset=' + this.result_limit*this.page)
             .then(response => response.json());

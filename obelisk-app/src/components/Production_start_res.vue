@@ -26,7 +26,7 @@ export default {
   methods: {
     async delete_production() {
       try{
-        fetch(`http://10.152.152.11:3000/rpc/remove_starting_production`, {
+        fetch('http://' + process.env.VUE_APP_API_URL + '/rpc/remove_starting_production', {
           method: 'POST',
           body: "{\"selected_id\":\"" + this.production.id + "\"}",
           headers: {

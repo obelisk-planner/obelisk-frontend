@@ -57,11 +57,11 @@ export default {
     async loadRecipe() {
       try {
         const recipes = await fetch(
-          `http://10.152.152.11:3000/recipes_history?change_id=eq.`+ this.$route.path.split("/")[4],
+          'http://' + process.env.VUE_APP_API_URL + '/recipes_history?change_id=eq.'+ this.$route.path.split("/")[4],
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         ).then(response => response.json());
         const current = await fetch(
-          `http://10.152.152.11:3000/recipes?id=eq.`+ recipes[0].id + '&select=id&limit=1',
+          'http://' + process.env.VUE_APP_API_URL + '/recipes?id=eq.'+ recipes[0].id + '&select=id&limit=1',
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         ).then(response => response.json());
         if (current) {this.still_there=true;}

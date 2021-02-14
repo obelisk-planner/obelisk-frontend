@@ -192,27 +192,27 @@ export default {
       var changes = [];
       var recipe_names = {};
       try {
-        changes = await fetch('http://10.152.152.11:3000/recipes_history?changed_user=eq.' 
+        changes = await fetch('http://' + process.env.VUE_APP_API_URL + '/recipes_history?changed_user=eq.' 
           + this.$route.path.split("/")[3] + '&order=changed_time&limit=' 
           + this.result_limit + '&offset=' + this.result_limit*this.page)
             .then(response => response.json());
-        changes = changes.concat(await fetch('http://10.152.152.11:3000/production_history?changed_user=eq.' 
+        changes = changes.concat(await fetch('http://' + process.env.VUE_APP_API_URL + '/production_history?changed_user=eq.' 
           + this.$route.path.split("/")[3] + '&order=changed_time&limit=' + this.result_limit
           + '&offset=' + this.result_limit*this.page 
           + '&select=change_id,id,recipe_id,changed_user,deleted,changed_time')
             .then(response => response.json()));
-        changes = changes.concat(await fetch('http://10.152.152.11:3000/starting_production_history?changed_user=eq.' 
+        changes = changes.concat(await fetch('http://' + process.env.VUE_APP_API_URL + '/starting_production_history?changed_user=eq.' 
           + this.$route.path.split("/")[3] + '&order=changed_time&limit=' + this.result_limit
           + '&offset=' + this.result_limit*this.page
           + '&select=change_id,id,recipe_id,changed_user,deleted,changed_time')
             .then(response => response.json()));
-        changes = changes.concat(await fetch('http://10.152.152.11:3000/resources_history?changed_user=eq.' 
+        changes = changes.concat(await fetch('http://' + process.env.VUE_APP_API_URL + '/resources_history?changed_user=eq.' 
           + this.$route.path.split("/")[3] + '&order=changed_time&limit=' + this.result_limit
           + '&offset=' + this.result_limit*this.page)
             .then(response => response.json()));
         for (var i=0; i<changes.length; i++) {
           if (changes[i].change_id) {
-            var new_prop = await fetch('http://10.152.152.11:3000/recipes_history?changed_time=lte.' 
+            var new_prop = await fetch('http://' + process.env.VUE_APP_API_URL + '/recipes_history?changed_time=lte.' 
               + encodeURIComponent(changes[i].changed_time) + '&limit=1&select=recipe_name')
                 .then(response => response.json());
             recipe_names[changes[i].recipe_id] = new_prop[0].recipe_name;

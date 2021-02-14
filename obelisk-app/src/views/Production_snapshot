@@ -50,7 +50,7 @@ export default {
     async loadRecipe() {
       try {
         const recipes = await fetch(
-          `http://10.152.152.11:3000/recipes_history?id=eq.`+ this.$route.path.split("/")[3],
+          'http://' + process.env.VUE_APP_API_URL + '/recipes_history?id=eq.'+ this.$route.path.split("/")[3],
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         ).then(response => response.json());
         this.recipe = recipes[0];

@@ -150,31 +150,31 @@ export default {
     async loadRecipe() {
       try {
         const recipes = await fetch(
-          `http://10.152.152.11:3000/recipes?id=eq.`+ this.$route.path.split("/")[2],
+          'http://' + process.env.VUE_APP_API_URL + '/recipes?id=eq.'+ this.$route.path.split("/")[2],
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         ).then(response => response.json());
         this.recipe = recipes[0];
         console.log(this.recipe.id);
         const productions = await fetch(
-          'http://10.152.152.11:3000/production?recipe_id=eq.'+this.recipe.id,
+          'http://' + process.env.VUE_APP_API_URL + '/production?recipe_id=eq.'+this.recipe.id,
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         );
         this.recipe.productions = await productions.json();
         for (const production of this.recipe.productions) {
           var retrieved_res = await fetch(
-            'http://10.152.152.11:3000/resources?id=eq.'+production.resource_id,
+            'http://' + process.env.VUE_APP_API_URL + '/resources?id=eq.'+production.resource_id,
             {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
           ).then(response => response.json());
           production.resource = retrieved_res[0];
         }
         const starting_productions = await fetch(
-          'http://10.152.152.11:3000/starting_production?recipe_id=eq.'+this.recipe.id,
+          'http://' + process.env.VUE_APP_API_URL + '/starting_production?recipe_id=eq.'+this.recipe.id,
           {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
         );
         this.recipe.starting_productions = await starting_productions.json();
         for (const starting_production of this.recipe.starting_productions) {
           retrieved_res = await fetch(
-            'http://10.152.152.11:3000/resources?id=eq.'+starting_production.resource_id,
+            'http://' + process.env.VUE_APP_API_URL + '/resources?id=eq.'+starting_production.resource_id,
             {headers: {'Authorization': 'Bearer ' + this.user_jwt.jwt}}
           ).then(response => response.json());
           starting_production.resource = retrieved_res[0];
@@ -195,7 +195,7 @@ export default {
     },
     async delete_recipe() {
       try{
-        fetch(`http://10.152.152.11:3000/rpc/remove_recipe`, {
+        fetch('http://' + process.env.VUE_APP_API_URL + '/rpc/remove_recipe', {
           method: 'POST',
           body: "{\"selected_id\":\"" + this.recipe.id + "\"}",
           headers: {
@@ -216,7 +216,7 @@ export default {
         new_production: this.new_prod_value,
       };
       try{
-        fetch(`http://10.152.152.11:3000/rpc/create_production`, {
+        fetch('http://' + process.env.VUE_APP_API_URL + '/rpc/create_production', {
           method: 'POST',
           body: JSON.stringify(new_prod),
           headers: {
@@ -239,7 +239,7 @@ export default {
         new_production: this.new_prod_value,
       };
       try{
-        fetch(`http://10.152.152.11:3000/rpc/create_starting_production`, {
+        fetch('http://' + process.env.VUE_APP_API_URL + '/rpc/create_starting_production', {
           method: 'POST',
           body: JSON.stringify(new_prod),
           headers:  {
