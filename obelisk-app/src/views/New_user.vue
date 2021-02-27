@@ -34,7 +34,8 @@ export default {
       try {
         await fetch('http://' + process.env.VUE_APP_API_URL + '/rpc/add_user', {
             method: 'POST',
-            body: '{"new_user":"'+this.username+'", "new_password":"'+this.fpassword+'"}',
+            body: '{"new_user":"' + JSON.stringify(this.username)
+              +'", "new_password":"' + JSON.stringify(this.fpassword) +'"}',
             headers: {
               'Content-Type': 'application/json;charset=utf-8',
               'Authorization': 'Bearer ' + this.user_jwt.jwt
