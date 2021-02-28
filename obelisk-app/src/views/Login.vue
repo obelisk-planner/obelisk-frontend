@@ -24,8 +24,8 @@ export default {
       try {
         const jwt = await fetch('http://' + process.env.VUE_APP_API_URL + '/rpc/login', {
             method: 'POST',
-            body: '{"rol":"'+ JSON.stringify(this.username) 
-              +'", "pass":"' + JSON.stringify(this.password) + '"}',
+            body: '{"rol":'+ JSON.stringify(this.username) 
+              +', "pass":' + JSON.stringify(this.password) + '}',
             headers: {'Content-Type': 'application/json;charset=utf-8'}
         }).then(response => response.json());
         const editor = await fetch('http://' + process.env.VUE_APP_API_URL + '/rpc/are_they_editor', {
