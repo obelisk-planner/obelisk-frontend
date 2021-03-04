@@ -39,7 +39,7 @@ GRANT anon TO authenticator;
 
 echo $random
 
-read -s -p "Password for newuser:" pswd
+read -s -p "Password for newuser (no special characters):" pswd
 echo
 read -s -p "Re-enter password:" repswd
 echo
