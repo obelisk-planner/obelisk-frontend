@@ -66,8 +66,11 @@ DECLARE
 BEGIN                                                                                  
     -- It was taking new_user literally, so here's a work-around using EXECUTE.        
     add_string =                                                                       
-      'CREATE USER ' || new_user || ' IN ROLE users;' ||                               
-      'GRANT ' || new_user || ' TO authenticator;'                                     
+      'CREATE USER ' || new_user || ' IN ROLE users;'                                                                    
+    ;
+    EXECUTE add_string;
+    add_string = 
+      'GRANT ' || new_user || ' TO authenticator;'
     ;                                                                                  
     EXECUTE add_string;                                                                
     INSERT INTO auth.users VALUES (new_user,crypt(new_password, gen_salt('bf')),FALSE);
