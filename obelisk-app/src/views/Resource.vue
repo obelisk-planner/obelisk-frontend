@@ -36,12 +36,12 @@
 
         <tr>
           <td>Token representing transport of {{ resource.resource_name }}:</td>
-          <td v-if="resource.transport_token != null">
-            <router-link v-bind:to="'/resource/' + this.resource.token.id">{{ resource.transpot_token }}</router-link>
+          <td v-if="resource.transport_token_id != null">
+            <router-link v-bind:to="'/resource/' + this.resource.token.id">{{ resource.token.resource_name }}</router-link>
           </td><td v-else>None.</td>
         </tr>
 
-        <tr v-if="resource.transport_token != null">
+        <tr v-if="resource.transport_token_id != null">
           <td>Transport tokens required per {{ resource.measurement_unit }}:</td>
           <td>{{ resource.tokens_required }} {{ resource.token.measurement_unit}}</td>
         </tr>
